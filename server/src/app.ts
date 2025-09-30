@@ -28,5 +28,5 @@ app.get('/api', (req: Request, res: Response) => {
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
-    console.log(`Test API: http://localhost:${port}/api/data?data=yes`);
+    console.log(`Test API: http://localhost:${port}/api?data=yes`);
 });
