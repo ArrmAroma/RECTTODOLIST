@@ -22,7 +22,7 @@ app.get('/api', (req: Request, res: Response) => {
 
     // กรณีไม่มี Query Parameter 'data'
     return res.status(400).json({
-        error: "กรุณาระบุ Query Parameter 'data' เช่น /api/data?data=example"
+        error: "กรุณาระบุ Query Parameter 'data' เช่น /api?data=example"
     });
 });
 
