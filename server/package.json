@@ -3,21 +3,30 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/app.ts",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/app.ts"
+    "start": "node dist/app.ts",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "joi": "^18.0.1",
+    "logger": "^0.0.1",
+    "mongoose": "^8.18.3",
+    "path": "^0.12.7",
+    "winston": "^3.18.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2"
   }
 }
