@@ -1,7 +1,6 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://arrmaroma.github.io/RECTTODOLIST/", 
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.1",
