@@ -1,18 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEdit,
-  faTrash,
-  faCheckCircle,
-  faClock,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faCheckCircle, faClock } from '@fortawesome/free-solid-svg-icons';
 
-export default function TodoListTable({
-  todos,
-  handleEdit,
-  handleDelete,
-  toggleFinished,
-}) {
+export default function TodoListTable({ todos, handleEdit, handleDelete, toggleFinished }) {
   return (
     <div className="table-card">
       <div className="table-wrapper">
@@ -35,20 +26,16 @@ export default function TodoListTable({
               </tr>
             ) : (
               todos.map((todo, index) => (
-                <tr key={todo.id} className={todo.finished ? 'finished' : ''}>
+                <tr key={todo._id} className={todo.finished ? 'finished' : ''}>
                   <td>{index + 1}</td>
                   <td className={todo.finished ? 'text-strikethrough' : ''}>
                     {todo.name}
                   </td>
-                  <td>
-                    {new Date(todo.date_start).toLocaleDateString('th-TH')}
-                  </td>
+                  <td>{new Date(todo.date_start).toLocaleDateString('th-TH')}</td>
                   <td>
                     <span
-                      onClick={() => toggleFinished(todo.id)}
-                      className={`status-badge ${
-                        todo.finished ? 'finished' : 'pending'
-                      }`}
+                      onClick={() => toggleFinished(todo._id)}
+                      className={`status-badge ${todo.finished ? 'finished' : 'pending'}`}
                     >
                       {todo.finished ? (
                         <>
@@ -71,7 +58,7 @@ export default function TodoListTable({
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
                       <button
-                        onClick={() => handleDelete(todo.id)}
+                        onClick={() => handleDelete(todo._id)}
                         className="btn-icon btn-delete"
                         title="ลบ"
                       >
@@ -88,3 +75,17 @@ export default function TodoListTable({
     </div>
   );
 }
+
+TodoListTable.propTypes = {
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      date_start: PropTypes.string.isRequired,
+      finished: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+  handleEdit: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  toggleFinished: PropTypes.func.isRequired,
+};

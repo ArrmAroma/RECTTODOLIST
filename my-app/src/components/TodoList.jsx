@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import '../App.css'; 
+import { useEffect, useState } from 'react';
+import * as todoService from '../services/todoService';
+import '../App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableList } from '@fortawesome/free-solid-svg-icons';
+import { createTodoSchema, updateTodoSchema, deleteTodoSchema, toggleFinishedSchema } from '../validators/todoValidator';
 
 import TodoForm from './TodoForm';
 import TodoTable from './TodoTable';
@@ -10,57 +12,99 @@ import TodoSummary from './TodoSummary';
 export default function TodoList() {
   const [todos, setTodos] = useState([]);
   const [name, setName] = useState('');
-  const [dateStart, setDateStart] = useState('');
+  const [date_start, setDateStart] = useState('');
   const [editID, setEditingID] = useState(null);
 
-  const handleAdd = () => {
-    if (!name || !dateStart) {
-      alert('กรุณากรอกข้อมูลให้ครบถ้วน');
-      return;
-    }
+  // โหลด todos ตอนเปิดหน้า
+  useEffect(() => {
+    loadTodos();
+  }, []);
 
-    if (editID !== null) {
-      setTodos(todos.map(todo =>
-        todo.id === editID
-          ? { ...todo, name, date_start: dateStart }
-          : todo
-      ));
+  const loadTodos = async () => {
+    try {
+      const res = await todoService.getTodos();
+      if (!res.data || !res.data.data) return;
+      // res.data.data.todolist คือ array ของ todos
+      setTodos(res.data.data.todolist || []);
+    } catch (err) {
+      console.error(err);
+      alert('โหลดรายการล้มเหลว');
+    }
+  };
+
+
+ const handleAdd = async () => {
+  try {
+    const data = { name, date_start };
+    console.log("handleAdd called");
+    console.log("name:", name);
+    console.log("date_start:", date_start);
+    console.log("editID:", editID);
+
+    if (editID) {
+      const { error } = updateTodoSchema.validate({ id: editID, ...data }, { abortEarly: true });
+      if (error) return alert(error.details[0].message);
+
+      await todoService.updateTodo(editID, data);
       setEditingID(null);
     } else {
-      const newTodo = {
-        id: Date.now(),
-        name,
-        date_start: dateStart,
-        finished: false
-      };
-      setTodos([...todos, newTodo]);
+      const { error } = createTodoSchema.validate(data, { abortEarly: true });
+      if (error) return alert(error.details[0].message);
+
+      await todoService.createTodo(data);
     }
 
+    await loadTodos();
     setName('');
     setDateStart('');
-  };
+  } catch (err) {
+    console.error(err);
+    alert('บันทึกล้มเหลว');
+  }
+};
+
 
   const handleEdit = (todo) => {
     setName(todo.name);
-    setDateStart(todo.date_start);
-    setEditingID(todo.id);
+    setDateStart (todo.date_start.substring(0, 10)); // format YYYY-MM-DD
+    setEditingID(todo._id);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('คุณต้องการลบรายการนี้ใช่หรือไม่?')) {
-      setTodos(todos.filter(todo => todo.id !== id));
-      if (editID === id) {
-        setName('');
-        setDateStart('');
-        setEditingID(null);
+  const handleDelete = async (id) => {
+    const { error } = deleteTodoSchema.validate({ id });
+    if (error) return alert(error.details[0].message);
+
+    if (window.confirm("คุณต้องการลบรายการนี้ใช่หรือไม่?")) {
+      try {
+        await todoService.deleteTodo(id);
+        setTodos(todos.filter(todo => todo._id !== id));
+        if (editID === id) {
+          setName("");
+          setDateStart ("");
+          setEditingID(null);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("ลบรายการล้มเหลว");
       }
     }
   };
 
-  const toggleFinished = (id) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, finished: !todo.finished } : todo
-    ));
+  const toggleFinished = async (id) => {
+    const todo = todos.find(t => t._id === id);
+    console.log(`id: ${id}, finished: ${!todo.finished}`);
+    if (!todo) return;
+
+    const { error } = toggleFinishedSchema.validate({ id, finished: !todo.finished });
+    if (error) return alert(error.details[0].message);
+
+    try {
+      await todoService.toggleFinished(id, !todo.finished );
+      setTodos(todos.map(t => t._id === id ? { ...t, finished: !t.finished } : t));
+    } catch (err) {
+      console.error(err);
+      alert(" ");
+    }
   };
 
   return (
@@ -71,8 +115,8 @@ export default function TodoList() {
         <TodoForm
           name={name}
           setName={setName}
-          dateStart={dateStart}
-          setDateStart={setDateStart}
+          date_start={date_start}
+          setDateStart ={setDateStart}
           handleAdd={handleAdd}
           editID={editID}
         />
