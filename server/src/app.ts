@@ -8,7 +8,18 @@ import mongoose from "mongoose";
 import todoRoutes from './routes/todolist.routes'
 
 dotenv.config({path: path.join(__dirname,"../development.env")})
+import cors from 'cors';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
+import { connectMongoDB } from "./config/mongoConfig";
+import mongoose from "mongoose";
 
+import todoRoutes from './routes/todolist.routes'
+
+dotenv.config({path: path.join(__dirname,"../development.env")})
+
+const app = express(); 
+const port = process.env.PORT || 5000;
 const app = express(); 
 const port = process.env.PORT || 5000;
 app.use(express.json());
@@ -44,12 +55,17 @@ app.get('/api', (req: Request, res: Response) => {
     // กรณีไม่มี Query Parameter 'data'
     return res.status(400).json({
         error: "กรุณาระบุ Query Parameter 'data' เช่น /api?data=example"
+        error: "กรุณาระบุ Query Parameter 'data' เช่น /api?data=example"
     });
 });
 
 app.listen(port, async() => {
     await connectMongoDB();
 
+app.listen(port, async() => {
+    await connectMongoDB();
+
     console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Test API: http://localhost:${port}/api?data=yes`);
     console.log(`Test API: http://localhost:${port}/api?data=yes`);
 });

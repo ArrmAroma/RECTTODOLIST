@@ -24,6 +24,46 @@
 .env.test.local
 .env.production.local
 .env.*.local
+
+# 4. LOGS & DEBUGGING
+# Ignore all log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 5. TESTING
+/coverage
+
+# 6. MISC / OS
+.DS_Store             # macOS system files
+Thumbs.db             # Windows system files
+# --------------------------------------------------------
+# ROOT .gitignore FOR RECTTODOLIST MONOREPO
+# This ignores files from both my-app (Frontend) and server (Backend)
+# --------------------------------------------------------
+
+# 1. DEPENDENCIES (Applies to both my-app/ and server/)
+# ใช้ **/node_modules เพื่อ Ignore ทุกโฟลเดอร์ node_modules ในทุก Subdirectory
+**/node_modules
+/.pnp
+.pnp.js
+
+# 2. BUILD AND PRODUCTION OUTPUT
+# Ignore build/dist folders for all sub-projects
+# /build มาจาก my-app และอาจใช้ใน server
+/build
+# /dist มาจาก server (TypeScript/Build)
+/dist
+
+# 3. ENVIRONMENT & SECRETS (สำคัญมาก!)
+# Ignore all local environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
 development.env
 
 # 4. LOGS & DEBUGGING

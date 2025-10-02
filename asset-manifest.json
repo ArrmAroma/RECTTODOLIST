@@ -1,15 +1,27 @@
 {
   "files": {
     "main.css": "/RECTTODOLIST/static/css/main.bd5cae96.css",
+<<<<<<< HEAD
     "main.js": "/RECTTODOLIST/static/js/main.74eaac67.js",
     "static/js/453.96453769.chunk.js": "/RECTTODOLIST/static/js/453.96453769.chunk.js",
     "index.html": "/RECTTODOLIST/index.html",
     "main.bd5cae96.css.map": "/RECTTODOLIST/static/css/main.bd5cae96.css.map",
     "main.74eaac67.js.map": "/RECTTODOLIST/static/js/main.74eaac67.js.map",
+=======
+    "main.js": "/RECTTODOLIST/static/js/main.f95ca52c.js",
+    "static/js/453.96453769.chunk.js": "/RECTTODOLIST/static/js/453.96453769.chunk.js",
+    "index.html": "/RECTTODOLIST/index.html",
+    "main.bd5cae96.css.map": "/RECTTODOLIST/static/css/main.bd5cae96.css.map",
+    "main.f95ca52c.js.map": "/RECTTODOLIST/static/js/main.f95ca52c.js.map",
+>>>>>>> 0fcfd628a17218e383509b0ba25e941dda5c2a5a
     "453.96453769.chunk.js.map": "/RECTTODOLIST/static/js/453.96453769.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bd5cae96.css",
+<<<<<<< HEAD
     "static/js/main.74eaac67.js"
+=======
+    "static/js/main.f95ca52c.js"
+>>>>>>> 0fcfd628a17218e383509b0ba25e941dda5c2a5a
   ]
 }
